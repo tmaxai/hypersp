@@ -1,0 +1,39 @@
+<html>
+<haed>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" defer></script>
+  <style>
+    form * {
+      display: block;
+      margin: 15px;
+      width: 500px;
+      height: 800px;
+    }
+  </style>
+</haed>
+
+<body>
+
+  <b>고객응대용 실시간 음성인식을 할려면 시작 버튼을 눌러주세요</b><br><br>
+  <button id="recordButton"
+    style="background: #00A4C3; border: 1px solid #00A4C3; width: 151px; height: 43px; color:antiquewhite;font-size:12pt"><b>시작</b></button>
+  <button id="pauseButton"
+    style="background: #00A4C3; border: 1px solid #00A4C3; width: 151px; height: 43px; color:antiquewhite;font-size:12pt"><b>멈춤</b></button>
+  <button id="stopButton"
+    style="background: #00A4C3; border: 1px solid #00A4C3; width: 151px; height: 43px; color:antiquewhite;font-size:12pt"><b>중지</b></button>
+  <br>
+
+  <!-- onsubmit="download('hello.srt', this['text'].value) -->
+  <form>
+    <textarea id="text"></textarea>
+  </form>
+
+  <p><strong>Recordings:</strong></p>
+  <ol id="recordingsList"></ol>
+
+  <script src="/static/inlineworker.js"></script>
+  <script src="/static/websocket_resp.js"></script>
+  <script src="/static/recorder.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+
+</html>

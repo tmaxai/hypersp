@@ -1,0 +1,144 @@
+model: Jasper
+
+input:
+  normalize: "per_feature"
+  sample_rate: 16000
+  window_size: 0.02
+  window_stride: 0.01
+  window: "hann"
+  features: 64
+  n_fft: 512
+  frame_splicing: 1
+  dither: 0.00001
+  feat_type: "logfbank"
+  normalize_transcripts: false
+  trim_silence: true
+  pad_to: 16
+  min_duration: 1.5
+  max_duration: 20.0
+  speed_perturbation: true
+  cutout_rect_regions: 2
+  cutout_rect_time: 120
+  cutout_rect_freq: 50
+
+input_eval:
+  normalize: "per_feature"
+  sample_rate: 16000
+  window_size: 0.02
+  window_stride: 0.01
+  window: "hann"
+  features: 64
+  n_fft: 512
+  frame_splicing: 1
+  dither: 0.00001
+  feat_type: "logfbank"
+  normalize_transcripts: false
+  trim_silence: true
+  pad_to: 16
+
+encoder:
+  activation: "relu"
+  convmask: true
+
+jasper:
+  - dilation: [1]
+    dropout: 0.2
+    filters: 256
+    kernel: [11]
+    repeat: 1
+    residual: false
+    stride: [2]
+  - dilation: [1]
+    dropout: 0.2
+    filters: 256
+    kernel: [11]
+    repeat: 5
+    residual: true
+    residual_dense: true
+    stride: [1]
+  - dilation: [1]
+    dropout: 0.2
+    filters: 256
+    kernel: [11]
+    repeat: 5
+    residual: true
+    residual_dense: true
+    stride: [1]
+  - dilation: [1]
+    dropout: 0.2
+    filters: 384
+    kernel: [13]
+    repeat: 5
+    residual: true
+    residual_dense: true
+    stride: [1]
+  - dilation: [1]
+    dropout: 0.2
+    filters: 384
+    kernel: [13]
+    repeat: 5
+    residual: true
+    residual_dense: true
+    stride: [1]
+  - dilation: [1]
+    dropout: 0.2
+    filters: 512
+    kernel: [17]
+    repeat: 5
+    residual: true
+    residual_dense: true
+    stride: [1]
+  - dilation: [1]
+    dropout: 0.2
+    filters: 512
+    kernel: [17]
+    repeat: 5
+    residual: true
+    residual_dense: true
+    stride: [1]
+  - dilation: [1]
+    dropout: 0.3
+    filters: 640
+    kernel: [21]
+    repeat: 5
+    residual: true
+    residual_dense: true
+    stride: [1]
+  - dilation: [1]
+    dropout: 0.3
+    filters: 640
+    kernel: [21]
+    repeat: 5
+    residual: true
+    residual_dense: true
+    stride: [1]
+  - dilation: [1]
+    dropout: 0.3
+    filters: 768
+    kernel: [25]
+    repeat: 5
+    residual: true
+    residual_dense: true
+    stride: [1]
+  - dilation: [1]
+    dropout: 0.3
+    filters: 768
+    kernel: [25]
+    repeat: 5
+    residual: true
+    residual_dense: true
+    stride: [1]
+  - dilation: [2]
+    dropout: 0.4
+    filters: 896
+    kernel: [29]
+    repeat: 1
+    residual: false
+    stride: [1]
+  - dilation: [1]
+    dropout: 0.4
+    filters: 1024
+    kernel: [1]
+    repeat: 1
+    residual: false
+    stride: [1]

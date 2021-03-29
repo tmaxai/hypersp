@@ -1,0 +1,105 @@
+<html>
+<haed>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js" defer></script>
+  <style>
+    form * {
+      display: block;
+      margin: 15px;
+      width: 500px;
+      height: 800px;
+    }
+  </style>
+</haed>
+
+<body>
+  <b> 강의 자동 자막 생성</b>
+  <p> 자막파일(srt) 포맷으로 음성을 텍스트로 변환합니다</p>
+  <b> 음성 파일을 업로드 해주세요</b><br><br>
+  <input type="file" , id="audio" accept="audio/*">
+  <button id="submitButton"
+    style="background: #00A4C3; border: 1px solid #00A4C3; width: 151px; height: 43px; color:antiquewhite;font-size:12pt"><b>인식하기</b></button><br><br>
+  <audio id="player" controls>
+    <source src="" id="play" />
+  </audio>
+  <br>
+
+  <form>
+    <textarea id="text"></textarea>
+  </form>
+  <input id="downlaodButton" type="submit" value="다운로드">
+
+  <script>
+    const inputElement = document.getElementById("audio");
+    const submitButton = document.getElementById("submitButton");
+    const textArea = document.getElementById("text");
+    const downloadButton = document.getElementById("downlaodButton");
+    var _file;
+    var reader = new FileReader()
+    reader.onload = function (e) {
+      sendData(e.target.result.split(',')[1])
+    }
+
+    inputElement.addEventListener("change", filehandler, false);
+
+    function filehandler(evt) {
+      var fileObj = URL.createObjectURL(evt.target.files[0]);
+
+      $("#play").attr("src", fileObj);
+      document.getElementById("player").load();
+      _file = evt.target.files[0]
+    }
+
+    downloadButton.addEventListener("click", download);
+
+    function download(evt) {
+
+      fname = inputElement.value
+      fname = fname.split(/[\\/]/).pop();
+      fname = fname.substr(0, fname.lastIndexOf('.')) + '.srt'
+
+      var element = document.createElement('a');
+      element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(textArea.value));
+      element.setAttribute('download', fname);
+
+      element.style.display = 'none';
+      document.body.appendChild(element);
+
+      element.click();
+
+      document.body.removeChild(element);
+    }
+
+    submitButton.addEventListener("click", function (evt) {
+      if (_file) {
+        submitButton.disabled = true;
+        reader.readAsDataURL(_file)
+        textArea.value = "잠시만 기달려 주세요."
+      }
+    })
+
+    function sendData(encoded_data) {
+
+      $.ajax({
+        url: "http://127.0.0.1:15001/recognize",
+        type: "POST",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        data: JSON.stringify({
+          "uid": "demo",
+          "sid": "general",
+          "data": encoded_data
+          //"data": Array.from(new Int16Array(audio))
+        }),
+      })
+        .done(function (result) {
+          submitButton.disabled = false
+          textArea.value = result["text"]
+
+        })
+
+    }
+
+  </script>
+</body>
+
+</html>
